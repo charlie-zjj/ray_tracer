@@ -1,4 +1,12 @@
-#pragma once
+/**
+ * @file vec3.h
+ * @author charlie
+ * @date 2022-08-05
+ */
+
+
+#ifndef __VEC3_H_
+#define __VEC3_H_
 
 #include "rtweekend.h"
 #include <cmath>
@@ -137,3 +145,5 @@ vec3 random_in_unit_disk() {
     return p;
    }
 }
+
+#endif

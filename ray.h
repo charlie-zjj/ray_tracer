@@ -1,5 +1,12 @@
-#ifndef RAY_H
-#define RAY_H
+/**
+ * @file ray.h
+ * @author charlie
+ * @date 2022-08-05
+ */
+
+
+#ifndef __RAY_H_
+#define __RAY_H_
 
 #include "vec3.h"
 

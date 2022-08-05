@@ -1,5 +1,12 @@
-#ifndef COLOR_H
-#define COLOR_H
+/**
+ * @file color.h
+ * @author charlie
+ * @date 2022-08-05
+ */
+
+
+#ifndef __COLOR_H_
+#define __COLOR_H_
 
 #include "rtweekend.h"
 #include "vec3.h"

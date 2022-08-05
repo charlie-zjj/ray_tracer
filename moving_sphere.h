@@ -1,4 +1,12 @@
-#pragma once
+/**
+ * @file moving_sphere.h
+ * @author charlie
+ * @date 2022-08-05
+ */
+
+
+#ifndef __MOVING_SPHERE_H_
+#define __MOVING_SPHERE_H_
 
 #include "rtweekend.h"
 
@@ -57,3 +65,5 @@ public:
 point3 moving_sphere::center(double time) const {
   return center0 + ((time - time0) / (time1 - time0)) * (center1 - center0);
 }
+
+#endif

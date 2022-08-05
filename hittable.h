@@ -1,5 +1,12 @@
-#ifndef HITTABLE_H
-#define HITTABLE_H
+/**
+ * @file hittable.h
+ * @author charlie
+ * @date 2022-08-05
+ */
+
+
+#ifndef __HITTABLE_H_
+#define __HITTABLE_H_
 
 #include "ray.h"
 #include "rtweekend.h"
