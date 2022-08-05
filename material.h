@@ -10,7 +10,9 @@
 #include "hittable.h"
 #include "ray.h"
 #include "rtweekend.h"
+#include "texture.h"
 #include "vec3.h"
+#include <memory>
 
 class material {
 public:
@@ -20,7 +22,8 @@ public:
 
 class lambertian : public material {
 public:
-  lambertian(const color &a) : albedo(a) {}
+  lambertian(const color &a) : albedo(make_shared<solid_color>(a)) {}
+  lambertian(const shared_ptr<texture> &a) : albedo(a) {}
 
   virtual bool scatter(const ray &r_in, const hit_record &rec,
                        color &attenuation, ray &scatered) const override {
@@ -28,12 +31,12 @@ public:
     if (scatter_direction.near_zero())
       scatter_direction = rec.normal;
     scatered = ray(rec.p, scatter_direction, r_in.time());
-    attenuation = albedo;
+    attenuation = albedo->value(rec.u, rec.v, rec.p);
     return true;
   }
 
 public:
-  color albedo;
+  shared_ptr<texture> albedo;
 };
 
 class metal : public material {
