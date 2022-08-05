@@ -4,11 +4,11 @@
  * @date 2022-08-05
  */
 
-
 #ifndef __VEC3_H_
 #define __VEC3_H_
 
 #include "rtweekend.h"
+
 #include <cmath>
 #include <iostream>
 #include <istream>
@@ -143,7 +143,7 @@ vec3 random_in_unit_disk() {
     if (p.length_squared() >= 1)
       continue;
     return p;
-   }
+  }
 }
 
 #endif

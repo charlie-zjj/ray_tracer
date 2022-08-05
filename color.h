@@ -4,15 +4,14 @@
  * @date 2022-08-05
  */
 
-
 #ifndef __COLOR_H_
 #define __COLOR_H_
 
 #include "rtweekend.h"
 #include "vec3.h"
+
 #include <math.h>
 #include <ostream>
-
 
 inline void write_color(std::ostream &out, color pixel_color,
                         int samples_per_pixel) {

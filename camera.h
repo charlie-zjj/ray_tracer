@@ -10,6 +10,7 @@
 #include "ray.h"
 #include "rtweekend.h"
 #include "vec3.h"
+
 #include <math.h>
 
 class camera {
