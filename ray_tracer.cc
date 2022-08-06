@@ -1,3 +1,4 @@
+#include "aarect.h"
 #include "camera.h"
 #include "color.h"
 #include "hittable.h"
@@ -130,12 +131,27 @@ hittable_list random_scene() {
   return world;
 }
 
+hittable_list simple_light() {
+  hittable_list objects;
+
+  auto pertext = make_shared<noise_texture>(4);
+  objects.add(make_shared<sphere>(point3(0, -1000, 0), 1000,
+                                  make_shared<lambertian>(pertext)));
+  objects.add(make_shared<sphere>(point3(0, 2, 0), 2,
+                                  make_shared<lambertian>(pertext)));
+
+  auto difflight = make_shared<diffuse_light>(color(4, 4, 4));
+  objects.add(make_shared<xy_rect>(3, 5, 1, 3, -2, difflight));
+
+  return objects;
+}
+
 int main() {
 
   // image
   const auto aspect_ratio = 16.0 / 9.0; // width / height
   const int image_width = 400;
-  const int samples_per_pixel = 100;
+  int samples_per_pixel = 100;
   const int max_depth = 50;
 
   // world
@@ -180,7 +196,12 @@ int main() {
     break;
   default:
   case 5:
+    world = simple_light();
+    samples_per_pixel = 400;
     background = color(.0, .0, .0);
+    lookfrom = point3(26, 3, 6);
+    lookat = point3(0, 2, 0);
+    vfov = 20.0;
     break;
   }
 
