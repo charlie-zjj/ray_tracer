@@ -13,23 +13,26 @@
 #include <iostream>
 #include <memory>
 
-color ray_color(const ray &r, const hittable &world, int depth) {
+color ray_color(const ray &r, const color &background, const hittable &world,
+                int depth) {
   hit_record rec;
 
   if (depth <= 0)
     return color(0, 0, 0);
 
-  if (world.hit(r, 0.001, infinity, rec)) {
-    ray scattered;
-    color attenuation;
-    if (rec.mat_ptr->scatter(r, rec, attenuation, scattered))
-      return attenuation * ray_color(scattered, world, depth - 1);
-    return color(0, 0, 0);
+  if (!world.hit(r, 0.001, infinity, rec)) {
+    return background;
   }
 
-  vec3 unit_direction = unit_vector(r.direction());
-  auto t = 0.5 * (unit_direction.y() + 1.0);
-  return (1.0 - t) * color(1.0, 1.0, 1.0) + t * color(0.5, 0.7, 1.0);
+  ray scattered;
+  color attenuation;
+  color emitted = rec.mat_ptr->emitted(rec.u, rec.v, rec.p);
+
+  if (!rec.mat_ptr->scatter(r, rec, attenuation, scattered))
+    return emitted;
+
+  return emitted +
+         attenuation * ray_color(scattered, background, world, depth - 1);
 }
 
 void process_bar(int j, int image_height) {
@@ -142,10 +145,12 @@ int main() {
   point3 lookat;
   auto vfov = 40.0;
   auto aperture = 0.0;
+  color background(0, 0, 0);
 
   switch (0) {
   case 1:
     world = random_scene();
+    background = color(.7, .8, 1.);
     lookfrom = point3(13, 2, 3);
     lookat = point3(0, 0, 0);
     vfov = 20.0;
@@ -153,6 +158,7 @@ int main() {
     break;
   case 2:
     world = two_spheres();
+    background = color(.7, .8, 1.);
     lookfrom = point3(13, 2, 3);
     lookat = point3(0, 0, 0);
     vfov = 20.0;
@@ -160,16 +166,21 @@ int main() {
 
   case 3:
     world = two_perlin_spheres();
+    background = color(.7, .8, 1.);
     lookfrom = point3(13, 2, 3);
     lookat = point3(0, 0, 0);
     vfov = 20.0;
     break;
-  default:
   case 4:
     world = earth();
     lookfrom = point3(13, 2, 3);
+    background = color(.7, .8, 1.);
     lookat = point3(0, 0, 0);
     vfov = 20.0;
+    break;
+  default:
+  case 5:
+    background = color(.0, .0, .0);
     break;
   }
 
@@ -192,7 +203,7 @@ int main() {
         auto u = (i + random_double()) / (image_width - 1);
         auto v = (j + random_double()) / (image_height - 1);
         ray r = cam.get_ray(u, v);
-        pixel_color += ray_color(r, world, max_depth);
+        pixel_color += ray_color(r, background, world, max_depth);
       }
       write_color(std::cout, pixel_color, samples_per_pixel);
     }
